@@ -7,9 +7,13 @@ import {
 } from 'react-hook-form';
 import NumberField from './components/NumberField';
 import TextField from './components/TextField';
-import { ArrayFieldProps, Field, FormProps, ObjectFieldProps, Tags } from './types';
-
-
+import {
+  ArrayFieldProps,
+  Field,
+  FormProps,
+  ObjectFieldProps,
+  Tags,
+} from './types';
 
 const appendDefaults = {
   text: '',
