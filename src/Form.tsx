@@ -7,7 +7,27 @@ import {
 } from 'react-hook-form';
 import NumberField from './components/NumberField';
 import TextField from './components/TextField';
-import { ArrayFieldProps, Field, FormProps, ObjectFieldProps } from './types';
+import {
+  ArrayFieldProps,
+  Field,
+  FormProps,
+  ObjectFieldProps,
+  Tags,
+} from './types';
+
+const appendDefaults = {
+  text: '',
+  number: 0,
+  array: [],
+  object: {},
+};
+
+const ComponentTags: Tags = {
+  text: TextField,
+  number: NumberField,
+  object: ObjectField,
+  array: ArrayField,
+};
 
 function ObjectField(props: ObjectFieldProps & { name: string }) {
   const { label, name, properties } = props;
@@ -21,13 +41,6 @@ function ObjectField(props: ObjectFieldProps & { name: string }) {
     </div>
   );
 }
-
-const appendDefaults = {
-  text: '',
-  number: 0,
-  array: [],
-  object: {},
-};
 
 function ArrayField(props: ArrayFieldProps & { name: string }) {
   const { name, itemField, label } = props;
@@ -64,21 +77,9 @@ function ArrayField(props: ArrayFieldProps & { name: string }) {
   );
 }
 
-function renderFields([name, fieldProps]: [string, Field]) {
-  if (fieldProps.type === 'text') {
-    return <TextField {...fieldProps} name={name} />;
-  }
-  if (fieldProps.type === 'number') {
-    return <NumberField {...fieldProps} name={name} />;
-  }
-  if (fieldProps.type === 'object') {
-    return <ObjectField {...fieldProps} name={name} />;
-  }
-  if (fieldProps.type === 'array') {
-    return <ArrayField {...fieldProps} name={name} />;
-  }
-
-  return <div>Unknown type</div>;
+function renderFields([name, { type, ...fieldProps }]: [string, Field]) {
+  const ComponentTag = ComponentTags[type];
+  return <ComponentTag {...fieldProps} name={name} />;
 }
 
 export function Form({ fields, onSubmit }: FormProps) {
@@ -88,7 +89,6 @@ export function Form({ fields, onSubmit }: FormProps) {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         {Object.entries(fields).map(renderFields)}
-
         <button type="submit">Save</button>
       </form>
     </FormProvider>
