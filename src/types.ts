@@ -1,38 +1,31 @@
 import { HTMLInputTypeAttribute } from 'react';
 import { SubmitHandler, FieldValues } from 'react-hook-form';
-type FieldSchema = {
-  type: 'text' | 'number' | 'array' | 'object';
-};
 
 type DefaultProps = {
   label: string;
   placeholder?: string;
 };
 
-export type TextFieldProps = FieldSchema &
-  DefaultProps & {
-    type: 'text';
-    htmlType?: HTMLInputTypeAttribute;
-  };
+export type TextFieldProps = DefaultProps & {
+  type: 'text';
+  htmlType?: HTMLInputTypeAttribute;
+};
 
-export type NumberFieldProps = FieldSchema &
-  DefaultProps & {
-    type: 'number';
-    min?: number;
-    max?: number;
-  };
+export type NumberFieldProps = DefaultProps & {
+  type: 'number';
+  min?: number;
+  max?: number;
+};
 
-export type ObjectFieldProps = FieldSchema &
-  DefaultProps & {
-    type: 'object';
-    properties: Fields;
-  };
+export type ObjectFieldProps = DefaultProps & {
+  type: 'object';
+  properties: Fields;
+};
 
-export type ArrayFieldProps = FieldSchema &
-  DefaultProps & {
-    type: 'array';
-    itemField: Field;
-  };
+export type ArrayFieldProps = DefaultProps & {
+  type: 'array';
+  itemField: Field;
+};
 
 export type Field =
   | TextFieldProps
@@ -46,3 +39,7 @@ export interface FormProps {
   fields: Fields;
   onSubmit: SubmitHandler<FieldValues>;
 }
+
+export type Tags = {
+  [key in Field['type']]: (props: any) => JSX.Element;
+};
